@@ -1,0 +1,28 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# IMPORTANT: do NOT ignore dist/ — we commit it because jsdelivr serves
+# directly from the GitHub repo path. The Shopify Page <script src="...">
+# URL points at dist/assets/index.js, so the built artifacts MUST be in
+# the repo for the CDN to serve them.

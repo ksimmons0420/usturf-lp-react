@@ -1,0 +1,22 @@
+/* @import MUST come first per CSS spec */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset only inside our scope so we don't break the Shopify theme */
+.usturf-react-lp,
+.usturf-react-lp *,
+.usturf-react-lp *::before,
+.usturf-react-lp *::after {
+  box-sizing: border-box;
+}
+
+.usturf-react-lp {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #14180F;
+  line-height: 1.55;
+}
