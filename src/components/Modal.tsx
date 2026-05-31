@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { LP_CONFIG } from '../lib/lp';
 
 /* ──────────────────────────────────────────────────────────────────────
@@ -71,7 +72,10 @@ export function Modal({ open, onClose, onTrack }: ModalProps) {
     return () => document.removeEventListener('keydown', handleKey);
   }, [open, onClose]);
 
-  return (
+  // Portal to body so the modal can't be trapped by any ancestor's stacking
+  // context, overflow:hidden, or transform. SSR-safe via document check.
+  if (typeof document === 'undefined') return null;
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
@@ -120,6 +124,7 @@ export function Modal({ open, onClose, onTrack }: ModalProps) {
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

@@ -1,5 +1,6 @@
 import { motion, useMotionValue, useSpring, useTransform, useScroll, useInView, useMotionValueEvent } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Modal } from '../components/Modal';
 import { usePostHog } from '../hooks/usePostHog';
 import { LP_CONFIG } from '../lib/lp';
@@ -26,7 +27,10 @@ export default function PremiumApp() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden font-sans" style={{ background: '#FFFFFF', color: '#14180F' }}>
+    {/* No overflow-hidden on outer wrapper — that can trap position:fixed
+        descendants on iOS Safari. The Hero handles its own bleed via internal
+        overflow-hidden on the hero-image card only. */}
+    <div className="min-h-screen relative font-sans" style={{ background: '#FFFFFF', color: '#14180F' }}>
       <main className="relative" style={{ zIndex: 2 }}>
         <Hero onCta={openModal} />
         <Stats />
@@ -1045,13 +1049,19 @@ function FinalCTA({ onCta }: { onCta: (s: string) => void }) {
    ════════════════════════════════════════════════════════════════════════ */
 
 function StickyBar({ onCta, onCall }: { onCta: (s: string) => void; onCall: () => void }) {
-  return (
+  // Portal to body so position:fixed pins to the VIEWPORT, not to any
+  // transformed/overflow-hidden ancestor that would trap it. iOS Safari
+  // is especially aggressive about creating containing blocks from
+  // transform/filter ancestors.
+  if (typeof document === 'undefined') return null;
+  return createPortal(
     <div
-      className="fixed bottom-0 left-0 right-0 z-[99998] flex gap-2 items-center px-3 py-2 md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-[99998] flex gap-2 items-center px-3 py-2 md:hidden usturf-react-lp"
       style={{
         background: '#FFFFFF',
         borderTop: '2px solid #4FAE45',
         boxShadow: '0 -4px 18px rgba(31, 42, 28, 0.12)',
+        fontFamily: "Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       }}
       role="region"
       aria-label="Quick contact"
@@ -1076,6 +1086,7 @@ function StickyBar({ onCta, onCall }: { onCta: (s: string) => void; onCall: () =
       >
         Get Free Estimate →
       </button>
-    </div>
+    </div>,
+    document.body,
   );
 }

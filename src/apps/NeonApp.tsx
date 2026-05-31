@@ -1,5 +1,6 @@
 import { motion, useMotionValue, useSpring, useTransform, useScroll, useInView, useMotionValueEvent } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Starfield } from '../components/Starfield';
 import { Modal } from '../components/Modal';
 import { usePostHog } from '../hooks/usePostHog';
@@ -27,7 +28,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen text-white relative overflow-hidden font-sans" style={{ background: '#050816' }}>
+    {/* No overflow-hidden on outer wrapper — that can trap position:fixed
+        descendants on iOS Safari. Bleed is handled per-section instead. */}
+    <div className="min-h-screen text-white relative font-sans" style={{ background: '#050816' }}>
       <Starfield />
       <BackgroundMesh />
       <CursorAurora />
@@ -1034,14 +1037,17 @@ function FinalCTA({ onCta }: { onCta: (s: string) => void }) {
    ════════════════════════════════════════════════════════════════════════ */
 
 function StickyBar({ onCta, onCall }: { onCta: (s: string) => void; onCall: () => void }) {
-  return (
+  // Portal to body — same reasoning as PremiumApp's StickyBar
+  if (typeof document === 'undefined') return null;
+  return createPortal(
     <div
-      className="fixed bottom-0 left-0 right-0 z-[99998] flex gap-2 items-center px-3 py-2 md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-[99998] flex gap-2 items-center px-3 py-2 md:hidden usturf-react-lp"
       style={{
         background: 'rgba(10, 14, 31, 0.92)',
         backdropFilter: 'blur(18px) saturate(180%)',
         borderTop: '1px solid rgba(0, 229, 255, 0.42)',
         boxShadow: '0 -8px 28px rgba(0, 0, 0, 0.6), 0 -2px 12px rgba(0, 229, 255, 0.2)',
+        fontFamily: "Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       }}
       role="region"
       aria-label="Quick contact"
@@ -1070,6 +1076,7 @@ function StickyBar({ onCta, onCall }: { onCta: (s: string) => void; onCall: () =
       >
         Get Free Estimate →
       </button>
-    </div>
+    </div>,
+    document.body,
   );
 }
