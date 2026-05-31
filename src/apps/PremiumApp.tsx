@@ -27,9 +27,6 @@ export default function PremiumApp() {
   };
 
   return (
-    {/* No overflow-hidden on outer wrapper — that can trap position:fixed
-        descendants on iOS Safari. The Hero handles its own bleed via internal
-        overflow-hidden on the hero-image card only. */}
     <div className="min-h-screen relative font-sans" style={{ background: '#FFFFFF', color: '#14180F' }}>
       <main className="relative" style={{ zIndex: 2 }}>
         <Hero onCta={openModal} />

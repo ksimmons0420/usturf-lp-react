@@ -28,8 +28,6 @@ export default function App() {
   };
 
   return (
-    {/* No overflow-hidden on outer wrapper — that can trap position:fixed
-        descendants on iOS Safari. Bleed is handled per-section instead. */}
     <div className="min-h-screen text-white relative font-sans" style={{ background: '#050816' }}>
       <Starfield />
       <BackgroundMesh />
