@@ -79,12 +79,23 @@ export function Modal({ open, onClose, onTrack }: ModalProps) {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[99999] flex items-center justify-center p-2"
+          className="usturf-react-lp"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.24 }}
-          style={{ background: 'rgba(5, 8, 22, 0.88)', backdropFilter: 'blur(10px)' }}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 99999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '0.5rem',
+            background: 'rgba(5, 8, 22, 0.88)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+          }}
           onClick={(e) => {
             if (e.target === e.currentTarget) onClose();
           }}

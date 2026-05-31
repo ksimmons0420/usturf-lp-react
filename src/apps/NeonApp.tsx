@@ -1038,18 +1038,29 @@ function StickyBar({ onCta, onCall }: { onCta: (s: string) => void; onCall: () =
   // Portal to body — same reasoning as PremiumApp's StickyBar
   if (typeof document === 'undefined') return null;
   return createPortal(
-    <div
-      className="fixed bottom-0 left-0 right-0 z-[99998] flex gap-2 items-center px-3 py-2 md:hidden usturf-react-lp"
-      style={{
-        background: 'rgba(10, 14, 31, 0.92)',
-        backdropFilter: 'blur(18px) saturate(180%)',
-        borderTop: '1px solid rgba(0, 229, 255, 0.42)',
-        boxShadow: '0 -8px 28px rgba(0, 0, 0, 0.6), 0 -2px 12px rgba(0, 229, 255, 0.2)',
-        fontFamily: "Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      }}
-      role="region"
-      aria-label="Quick contact"
-    >
+    <div className="usturf-react-lp">
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 99998,
+          display: 'flex',
+          gap: '0.5rem',
+          alignItems: 'center',
+          padding: '0.5rem 0.75rem',
+          background: 'rgba(10, 14, 31, 0.92)',
+          backdropFilter: 'blur(18px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(18px) saturate(180%)',
+          borderTop: '1px solid rgba(0, 229, 255, 0.42)',
+          boxShadow: '0 -8px 28px rgba(0, 0, 0, 0.6), 0 -2px 12px rgba(0, 229, 255, 0.2)',
+          fontFamily: "Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        }}
+        className="md:hidden"
+        role="region"
+        aria-label="Quick contact"
+      >
       <a
         href={LP_CONFIG.PHONE_TEL}
         onClick={onCall}
@@ -1074,6 +1085,7 @@ function StickyBar({ onCta, onCall }: { onCta: (s: string) => void; onCall: () =
       >
         Get Free Estimate →
       </button>
+      </div>
     </div>,
     document.body,
   );

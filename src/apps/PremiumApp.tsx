@@ -1051,18 +1051,32 @@ function StickyBar({ onCta, onCall }: { onCta: (s: string) => void; onCall: () =
   // is especially aggressive about creating containing blocks from
   // transform/filter ancestors.
   if (typeof document === 'undefined') return null;
+  // Wrap in a <div class="usturf-react-lp"> so Tailwind utilities scoped under
+  // that class (via important: '.usturf-react-lp') still apply to descendants.
+  // Outer wrapper uses inline styles for the critical fixed-positioning since
+  // we can't rely on Tailwind here.
   return createPortal(
-    <div
-      className="fixed bottom-0 left-0 right-0 z-[99998] flex gap-2 items-center px-3 py-2 md:hidden usturf-react-lp"
-      style={{
-        background: '#FFFFFF',
-        borderTop: '2px solid #4FAE45',
-        boxShadow: '0 -4px 18px rgba(31, 42, 28, 0.12)',
-        fontFamily: "Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      }}
-      role="region"
-      aria-label="Quick contact"
-    >
+    <div className="usturf-react-lp">
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 99998,
+          display: 'flex',
+          gap: '0.5rem',
+          alignItems: 'center',
+          padding: '0.5rem 0.75rem',
+          background: '#FFFFFF',
+          borderTop: '2px solid #4FAE45',
+          boxShadow: '0 -4px 18px rgba(31, 42, 28, 0.12)',
+          fontFamily: "Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        }}
+        className="md:hidden"
+        role="region"
+        aria-label="Quick contact"
+      >
       <a
         href={LP_CONFIG.PHONE_TEL}
         onClick={onCall}
@@ -1083,6 +1097,7 @@ function StickyBar({ onCta, onCall }: { onCta: (s: string) => void; onCall: () =
       >
         Get Free Estimate →
       </button>
+      </div>
     </div>,
     document.body,
   );
