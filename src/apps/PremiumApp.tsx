@@ -650,16 +650,34 @@ function SectionHead({ eyebrow, title, sub }: { eyebrow: string; title: React.Re
 
 function FinancingOffer({ onCta }: { onCta: (s: string) => void }) {
   return (
-    <section className="relative px-5 py-16 md:py-20 overflow-hidden">
-      <div
-        className="absolute inset-0 pointer-events-none"
+    <section
+      className="relative px-5 py-16 md:py-20 overflow-hidden"
+      style={{
+        // Bg directly on the section so the dark wrap is guaranteed to render
+        // behind the glass card. Aurora blobs + deep green gradient base.
+        background:
+          'radial-gradient(45% 60% at 20% 30%, rgba(79, 174, 69, 0.28), transparent 65%),' +
+          'radial-gradient(45% 60% at 80% 70%, rgba(255, 196, 49, 0.22), transparent 65%),' +
+          'linear-gradient(180deg, #1F4C1A 0%, #0F2F0C 100%)',
+      }}
+    >
+      {/* Decorative animated mesh blob for additional aurora movement */}
+      <motion.div
+        className="absolute pointer-events-none"
         style={{
-          background:
-            'radial-gradient(45% 60% at 20% 30%, rgba(54, 125, 47, 0.22), transparent 65%),' +
-            'radial-gradient(45% 60% at 80% 70%, rgba(255, 196, 49, 0.20), transparent 65%),' +
-            'linear-gradient(180deg, #1F4C1A 0%, #0F2F0C 100%)',
+          inset: '-10%',
           zIndex: 0,
+          background:
+            'radial-gradient(35% 45% at 30% 40%, rgba(255, 216, 110, 0.15), transparent 70%),' +
+            'radial-gradient(30% 40% at 70% 60%, rgba(79, 174, 69, 0.18), transparent 70%)',
+          filter: 'blur(40px)',
         }}
+        animate={{
+          scale: [1, 1.08, 1.03],
+          rotate: [0, 3, -2],
+        }}
+        transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }}
+        aria-hidden="true"
       />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -669,10 +687,17 @@ function FinancingOffer({ onCta }: { onCta: (s: string) => void }) {
         className="relative max-w-[720px] mx-auto text-center p-8 md:p-10 rounded-3xl"
         style={{
           zIndex: 1,
-          background: 'rgba(255, 255, 255, 0.10)',
-          backdropFilter: 'blur(18px) saturate(160%)',
-          border: '1px solid rgba(255, 255, 255, 0.22)',
-          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 24px 64px rgba(0, 0, 0, 0.28)',
+          // Beefier glass — slightly more white tint + gold-tinted border + halo
+          // so the card visibly floats above the dark green wrap.
+          background: 'rgba(255, 255, 255, 0.14)',
+          backdropFilter: 'blur(22px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(22px) saturate(180%)',
+          border: '1px solid rgba(255, 215, 64, 0.35)',
+          boxShadow:
+            'inset 0 1px 0 rgba(255, 255, 255, 0.22), ' +
+            '0 0 0 1px rgba(255, 215, 64, 0.08), ' +
+            '0 0 40px rgba(255, 196, 49, 0.18), ' +
+            '0 24px 64px rgba(0, 0, 0, 0.35)',
         }}
       >
         <div
