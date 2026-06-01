@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import { Starfield } from '../components/Starfield';
 import { Modal } from '../components/Modal';
 import { usePostHog } from '../hooks/usePostHog';
+import { useIsMobile } from '../hooks/useIsMobile';
 import { LP_CONFIG } from '../lib/lp';
 
 const LP_NAME = 'social2026-neon-react';
@@ -1035,7 +1036,8 @@ function FinalCTA({ onCta }: { onCta: (s: string) => void }) {
    ════════════════════════════════════════════════════════════════════════ */
 
 function StickyBar({ onCta, onCall }: { onCta: (s: string) => void; onCall: () => void }) {
-  // Portal to body — same reasoning as PremiumApp's StickyBar
+  const isMobile = useIsMobile();
+  if (!isMobile) return null;
   if (typeof document === 'undefined') return null;
   return createPortal(
     <div className="usturf-react-lp">
@@ -1057,7 +1059,6 @@ function StickyBar({ onCta, onCall }: { onCta: (s: string) => void; onCall: () =
           boxShadow: '0 -8px 28px rgba(0, 0, 0, 0.6), 0 -2px 12px rgba(0, 229, 255, 0.2)',
           fontFamily: "Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         }}
-        className="md:hidden"
         role="region"
         aria-label="Quick contact"
       >

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Modal } from '../components/Modal';
 import { usePostHog } from '../hooks/usePostHog';
+import { useIsMobile } from '../hooks/useIsMobile';
 import { LP_CONFIG } from '../lib/lp';
 
 const LP_NAME = 'social2026-premium-react';
@@ -1046,15 +1047,11 @@ function FinalCTA({ onCta }: { onCta: (s: string) => void }) {
    ════════════════════════════════════════════════════════════════════════ */
 
 function StickyBar({ onCta, onCall }: { onCta: (s: string) => void; onCall: () => void }) {
-  // Portal to body so position:fixed pins to the VIEWPORT, not to any
-  // transformed/overflow-hidden ancestor that would trap it. iOS Safari
-  // is especially aggressive about creating containing blocks from
-  // transform/filter ancestors.
+  const isMobile = useIsMobile();
+  // Don't render at all on desktop. Avoids the Tailwind scoping pitfall where
+  // md:hidden wouldn't apply on a portaled element (descendant-selector miss).
+  if (!isMobile) return null;
   if (typeof document === 'undefined') return null;
-  // Wrap in a <div class="usturf-react-lp"> so Tailwind utilities scoped under
-  // that class (via important: '.usturf-react-lp') still apply to descendants.
-  // Outer wrapper uses inline styles for the critical fixed-positioning since
-  // we can't rely on Tailwind here.
   return createPortal(
     <div className="usturf-react-lp">
       <div
@@ -1073,7 +1070,6 @@ function StickyBar({ onCta, onCall }: { onCta: (s: string) => void; onCall: () =
           boxShadow: '0 -4px 18px rgba(31, 42, 28, 0.12)',
           fontFamily: "Poppins, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         }}
-        className="md:hidden"
         role="region"
         aria-label="Quick contact"
       >
